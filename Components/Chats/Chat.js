@@ -19,7 +19,7 @@ export default class Chat extends Component {
 
     return(
       <View style={styles.container}>
-        Chat
+        <Text>Chat</Text>
       </View>
     )
   }

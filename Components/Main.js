@@ -28,12 +28,10 @@ const tabNavigation = () => {
 
 export default function Main() {
 
-  
-
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-      <Stack.Navigator headerMode={false} initialRouteName="Home">
+      <Stack.Navigator headerMode={false} initialRouteName="root">
         <Stack.Screen name="root" component={tabNavigation} />
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
