@@ -19,69 +19,121 @@ export default class Home extends Component {
   render() {
 
     return(
-        <SafeAreaView>
-          <ScrollView>
-          <View style={styles.container}>
-          <SearchBar containerStyle={styles.searchBar}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            placeholder=""
-            value={this.state.search}
-            onChangeText={(val) => this.setState({search: val})}
-            platform='android' />
-            <View style={styles.cardContainer}>
-              <View style={styles.row}><Text>Browse Categories</Text><Text style={styles.link}>See all</Text></View>
-              <View style={styles.categories}>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >MOBILES</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#42ffc3'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >VEHICLES</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#ed5328'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >PROPERTY FOR SALE</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#88fceb'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >PROPERTY FOR RENT</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#be90f5'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >ELECTRONICS & HOME APPLIANCES</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#cca35c'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >BIKES</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#f56c8c'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >BUISNESS, INDUSTRIAL & AGRICULTURAL</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#fce17e'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >SERVICES</Text>
-                </View>
-                <View style={styles.categoryLink} >
-                  <View style={[styles.iconBack, {backgroundColor: '#f56740'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >JOBS</Text>
+      <SafeAreaView>
+        <ScrollView>
+            <View style={styles.container}>
+            <SearchBar containerStyle={styles.searchBar}
+              inputContainerStyle={styles.inputContainerStyle}
+              inputStyle={styles.inputStyle}
+              placeholder=""
+              value={this.state.search}
+              onChangeText={(val) => this.setState({search: val})}
+              platform='android' />
+              <View style={styles.cardContainer}>
+                <View style={styles.row}><Text>Browse Categories</Text><Text style={styles.link}>See all</Text></View>
+                <View style={styles.categories}>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >MOBILES</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#42ffc3'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >VEHICLES</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#ed5328'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >PROPERTY FOR SALE</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#88fceb'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >PROPERTY FOR RENT</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#be90f5'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >ELECTRONICS & HOME APPLIANCES</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#cca35c'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >BIKES</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#f56c8c'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >BUISNESS, INDUSTRIAL & AGRICULTURAL</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#fce17e'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >SERVICES</Text>
+                  </View>
+                  <View style={styles.categoryLink} >
+                    <View style={[styles.iconBack, {backgroundColor: '#f56740'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
+                    <Text style={styles.productText} >JOBS</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View style={styles.cardContainer} >
-              <View style={styles.row}><Text>More on Land & Plots</Text><Text style={styles.link}>View more</Text></View>
-              <Card 
-                  image={require('../../assets/images/plot.jpg')} >
-                <View>
-                  <Text>Rs 31,500</Text>
+              <View style={styles.cardContainer} >
+                <View style={styles.row}><Text>More on Land & Plots</Text><Text style={styles.link}>View more</Text></View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                  >
+                {/* <View style={styles.cardRow} > */}
+                  <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
+                  <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
+                  <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
+                  <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
+                {/* </View> */}
+                </ScrollView>
+              </View>
+              <View style={styles.cardContainer} >
+                <View style={styles.row}><Text>Fresh Recommendations</Text></View>
+                <View style={styles.cardColumn} >
+                  <Card containerStyle={styles.productCardColumn} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
+                  <Card containerStyle={styles.productCardColumn} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
+                  <Card containerStyle={styles.productCardColumn} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
+                  <Card containerStyle={styles.productCardColumn} imageWrapperStyle={styles.cardImage}
+                      image={require('../../assets/images/plot.jpg')} >
+                    <View>
+                      <Text>Rs 31,500</Text>
+                    </View>
+                  </Card>
                 </View>
-              </Card>
-            </View>
-        </View>
+              </View>
+          </View>
         </ScrollView>
-        </SafeAreaView>
+      </SafeAreaView>
     )
   }
 }
@@ -141,5 +193,33 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: 10
-  }
+  },
+  productCard: {
+    width: 160,
+    marginHorizontal: 2,
+    borderColor: 'grey',
+    borderRadius: 5
+  },
+  cardRow: {
+    overflow: "scroll",
+    flexWrap: "nowrap",
+    flexDirection: 'row',
+  },
+  cardImage: {
+    alignSelf: 'center', 
+    width: '90%',
+    paddingVertical: 5
+  },
+  cardColumn: {
+    overflow: "scroll",
+    flexWrap: "wrap",
+    flexDirection: 'row' 
+  },
+  productCardColumn: {
+    width: '47%',
+    marginHorizontal: 4,
+    borderColor: 'grey',
+    borderRadius: 5,
+    marginVertical: 8
+  },
 })
