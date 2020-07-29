@@ -1,15 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, ScrollView } from 'react-native';
 import { SearchBar, Icon, Card, Image } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context'
-// import { createDrawerNavigator } from '@react-navigation/drawer';
+import { connect } from 'react-redux';
+import { baseUrl } from '../../shared/baseUrl';
+import { Loading } from '../LoadingComponent';
+import { postComment } from '../../redux/Actions'
 
-// const Drawer = createDrawerNavigator();
+const mapStateToProps = state => ({
+  dishes: state.dishes
+})
 
-export default class Home extends Component {
+class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -30,7 +34,7 @@ export default class Home extends Component {
               onChangeText={(val) => this.setState({search: val})}
               platform='android' />
               <View style={styles.cardContainer}>
-                <View style={styles.row}><Text>Browse Categories</Text><Text style={styles.link}>See all</Text></View>
+                <View style={styles.row}><Text>Browse Categories</Text><Text style={styles.link} onPress={() => this.props.navigation.navigate('categories')} >See all</Text></View>
                 <View style={styles.categories}>
                   <View style={styles.categoryLink} >
                     <View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>
@@ -223,3 +227,6 @@ const styles = StyleSheet.create({
     marginVertical: 8
   },
 })
+
+
+export default connect(mapStateToProps)(Home)
