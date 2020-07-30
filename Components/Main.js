@@ -13,10 +13,12 @@ import Categories from './Home/Categories';
 import SubCategories from './Home/SubCategories';
 import { fetchAds } from '../redux/Actions'
 import { connect } from 'react-redux';
+import { DISHES } from '../shared/data'
+import productList from './Home/productList';
 
 const mapStateToProps = state => {
   return {
-
+    dishes: DISHES
   }
 }
 
@@ -70,10 +72,10 @@ class Main extends Component {
       <SafeAreaProvider>
         <NavigationContainer> 
         <Stack.Navigator>
-          <Stack.Screen name="root" component={tabNavigation} options={{headerShown: false}} />
+          <Stack.Screen name="root" component={tabNavigation} options={{headerShown: false}}  />
           <Stack.Screen name='categories' component={Categories} />
           <Stack.Screen name='subcategories' component={SubCategories} />
-          
+          <Stack.Screen name="productlist" component={productList} options={{headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
       </SafeAreaProvider>

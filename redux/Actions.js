@@ -1,9 +1,9 @@
 import * as ActionTypes from './ActionTypes'
 import { baseUrl } from '../shared/baseUrl'
 
-export const fetchAds = () => () => {
+export const fetchAds = () => (dispatch) => {
     // dispatch(dishesLoading(true))
-    return fetch(baseUrl + 'ads', {
+    return fetch(`http://192.168.1.63:3000/ads`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -14,14 +14,15 @@ export const fetchAds = () => () => {
         else {
             var error = new Error('Error ' + response.status + ': ' + response.statusText)
             error.response = response
-            throw error
+            return error
         }
     },
     error => {
         var errmess = new Error(error.message)
         return errmess
     })
-    .then(response => console.log(response))
+    .then(response => console.log('res:', response))
+    // .then(response => {return response})
     // .then(dishes => dispatch(addDishes(dishes)))
-    .catch(error => console.log(error.response))
+    .catch(error => console.log('err', error))
 }

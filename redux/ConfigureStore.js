@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import logger from 'redux-logger'
 import { persistStore, persistCombineReducers } from 'redux-persist'
 import AsyncStorage from '@react-native-community/async-storage'
+import {ads} from './ads'
 
 export const configureStore = () => {
     const config = {
@@ -13,7 +14,7 @@ export const configureStore = () => {
 
     const store = createStore(
         persistCombineReducers( config, {
-            
+            ads
         }),
         compose(
             applyMiddleware(thunk, logger)

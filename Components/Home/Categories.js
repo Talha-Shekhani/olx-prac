@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import SimIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import SubCategories from './SubCategories';
 
 export default class Categories extends Component {
   constructor(props) {
@@ -17,12 +18,12 @@ export default class Categories extends Component {
     return(
         <ScrollView>
             <View style={styles.container}>
-                <ListItem containerStyle={styles.navLink}
+                <ListItem containerStyle={styles.navLink} onPress={() => this.props.navigation.navigate('subcategories', {subCategory: 'mobile'})}
                     title='Mobiles'
                     leftIcon={<View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='mobile' type='font-awesome' size={24} /></View>}
                     rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
                 </ListItem>
-                <ListItem containerStyle={styles.navLink}
+                <ListItem containerStyle={styles.navLink} onPress={() => this.props.navigation.navigate('subcategories', {subCategory: 'vehicle'})}
                     title='Vehicles'
                     leftIcon={<View style={[styles.iconBack, {backgroundColor: '#42ffc3'}]}><AntIcon name='car' size={18} /></View>}
                     rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
@@ -69,7 +70,7 @@ export default class Categories extends Component {
                 </ListItem>
                 <ListItem containerStyle={styles.navLink}
                     title='Furniture & Home Decor'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='couch' type='font-awesome' size={18} /></View>}
+                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='mobile' type='font-awesome' size={18} /></View>}
                     rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
                 </ListItem>
                 <ListItem containerStyle={styles.navLink}

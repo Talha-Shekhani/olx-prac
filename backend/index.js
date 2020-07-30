@@ -5,7 +5,7 @@ const morgan = require('./node_modules/morgan')
 const bodyParser = require('./node_modules/body-parser')
 const Ads = require('./routes/ads')
 
-const hostname = 'localhost'
+const hostname = '192.168.1.63'
 const port = 3000
 
 const app = express()
