@@ -3,15 +3,15 @@ import * as ActionTypes from './ActionTypes'
 export const ads = (state = {
     isLoading: true,
     errMess: null,
-    dishes: []
+    ads: []
 }, action) => {
     switch (action.type) {
-        case ActionTypes.ADD_DISHES:
-            return {...state, isLoading: false, errMess: null, dishes: action.payload}
-        case ActionTypes.DISHES_LOADING:
-            return {...state, isLoading: true, errMess: null, dishes: []}
-        case ActionTypes.DISHES_FAILED:
-                return {...state, isLoading: false, errMess: action.payload, dishes: []}
+        case ActionTypes.ADD_ADS:
+            return {...state, isLoading: false, errMess: null, ads: action.payload}
+        case ActionTypes.ADS_LOADING:
+            return {...state, isLoading: true, errMess: null, ads: []}
+        case ActionTypes.ADS_FAILED:
+                return {...state, isLoading: false, errMess: action.payload, ads: []}
         default:
             return state
     }

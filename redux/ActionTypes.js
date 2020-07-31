@@ -1,1 +1,6 @@
-export const FETCH_ADS = 'FETCH_ADS'
+export const ADD_ADS = 'ADD_ADS'
+export const ADS_FAILED = 'ADS_FAILED'
+export const ADS_LOADING = 'ADS_LOADING'
+export const ADD_CAT = 'ADD_CAT'
+export const CAT_FAILED = 'CAT_FAILED'
+export const CAT_LOADING = 'CAT_LOADING'

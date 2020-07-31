@@ -8,86 +8,35 @@ import AntIcon from 'react-native-vector-icons/AntDesign'
 import SimIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import SubCategories from './SubCategories';
+import { connect } from 'react-redux';
+import { dirctry } from '../../shared/baseUrl';
 
-export default class Categories extends Component {
+const mapStateToProps = state => {
+    return {
+        cat: state.categories.categories
+    }
+}
+
+class Categories extends Component {
   constructor(props) {
     super(props)
   }
-  render() {
 
+  render() {
     return(
         <ScrollView>
             <View style={styles.container}>
-                <ListItem containerStyle={styles.navLink} onPress={() => this.props.navigation.navigate('subcategories', {subCategory: 'mobile'})}
-                    title='Mobiles'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='mobile' type='font-awesome' size={24} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
+                {/* <Text>{JSON.stringify(this.props.cat)}</Text> */}
+                {this.props.cat.map((item, index) => {
+                    return (
+                        <ListItem containerStyle={styles.navLink} onPress={() => this.props.navigation.navigate('subcategories', {subCategory: 'mobile'})}
+                        key={index}
+                        title={item.title}
+                        leftAvatar={{source: {uri: dirctry + item.img}}}
+                        rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
                 </ListItem>
-                <ListItem containerStyle={styles.navLink} onPress={() => this.props.navigation.navigate('subcategories', {subCategory: 'vehicle'})}
-                    title='Vehicles'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#42ffc3'}]}><AntIcon name='car' size={18} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Property For Sale'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#ed5328'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Property For Rent'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#88fceb'}]}><Icon name='mobile' type='font-awesome' size={28} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Electronics & Home Appliances'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#be90f5'}]}><Icon name='tv' type='font-awesome' size={16} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Bikes'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#cca35c'}]}><Icon name='motorcycle' type='font-awesome' size={18} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Buisness, Industrial & Agricultural'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#f56c8c'}]}><Icon name='industry' type='font-awesome' size={16} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Services'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#fce17e'}]}><MatIcon name='wrench-outline' size={18} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Jobs'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#f56740'}]}><SimIcon name='briefcase' size={16} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Animals'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#42ffc3'}]}><Icon name='paw' type='font-awesome' size={18} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Furniture & Home Decor'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#fff700'}]}><Icon name='mobile' type='font-awesome' size={18} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Fashion & Beauty'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#be90f5'}]}><MatIcon name='tshirt-crew-outline' size={20} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Books, Sports & Hobbies'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#cca35c'}]}><MatIcon name='guitar-acoustic' size={22} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
-                <ListItem containerStyle={styles.navLink}
-                    title='Kids'
-                    leftIcon={<View style={[styles.iconBack, {backgroundColor: '#42ffc3'}]}><MatIcon name='baby-carriage' size={22} /></View>}
-                    rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
-                </ListItem>
+                    )
+                })}
             </View>
         </ScrollView>
     )
@@ -129,3 +78,6 @@ const styles = StyleSheet.create({
       color: 'grey'
   }
 })
+
+
+export default connect(mapStateToProps)(Categories)

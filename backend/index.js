@@ -4,25 +4,21 @@ const http = require('http')
 const morgan = require('./node_modules/morgan')
 const bodyParser = require('./node_modules/body-parser')
 const Ads = require('./routes/ads')
+const Cat = require('./routes/categories')
 
-const hostname = '192.168.1.63'
+// const hostname = '192.168.1.63'
+const hostname = 'localhost'
 const port = 3000
+// const port = 8080
 
 const app = express()
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/ads', Ads)
-// app.use('/promotions', promoRouter)
-// app.use('/leaders', leaderRouter)
-
-// app.use(express.static(__dirname+ '/public'))
-// app.use((req, res, next) => {
-//     console.log(req.headers)
-//     res.statusCode = 200
-//     res.setHeader('Content-Type', 'text/html')
-//     res.end(`<html><body><h1>This is an Express Server</h1></body></html>`)
-// })
+app.use('/fetchCat', Cat )
+// app.use('/fetchSubcat', Subcat )
+app.use(express.static(__dirname+ '/assets/images'))
 
 const server = http.createServer(app)
 

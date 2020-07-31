@@ -7,43 +7,59 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import SimIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { fetchCategories } from '../../redux/Actions'
+import { connect } from 'react-redux';
 
-function RenderItem({ name, props }) {
-  if (name == 'mobile') {
+const mapStateToProps = state => {
+  return {
+    cat: state.categories.categories
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  fetchCategories: () => dispatch(fetchCategories())
+})
+
+
+function RenderItem(props) {
+  // if (props.name == 'mobile') {
     return (
       <View style={styles.container}>
-        <ListItem style={styles.categoryLink} onPress={() => props.navigation.navigate('productlist')} title='Tablet' >
-        </ListItem>
-        <ListItem style={styles.categoryLink} title='Accessories' >
-        </ListItem>
-        <ListItem style={styles.categoryLink} title='Mobile Phones' >
-        </ListItem>
+        {/* <Text>{JSON.stringify(props.props.cat)}</Text> */}
+        {props.props.cat.filter(item => item.name == props.name).map((item, index) => {
+          return (
+            <ListItem style={styles.categoryLink} onPress={() => props.navigation.navigate('productlist')} title={item.name} ></ListItem>
+          )
+        })}
         <ListItem style={styles.categoryLink} title='View All' >
         </ListItem>
       </View>
     )
-  }
-  else if (name == 'vehicle') {
-    return(
-      <View style={styles.container}>
-        <ListItem style={styles.categoryLink} title='Cars' >
-        </ListItem>
-        <ListItem style={styles.categoryLink} title='Cars on Installment' >
-        </ListItem>
-        <ListItem style={styles.categoryLink} title='Cars Accessories' >
-        </ListItem>
-        <ListItem style={styles.categoryLink} title='Spare Parts' >
-        </ListItem>
-      </View>
-    )
-  }
+  // }
+  // else if (props.name == 'vehicle') {
+  //   return(
+  //     <View style={styles.container}>
+  //       <ListItem style={styles.categoryLink} title='Cars' >
+  //       </ListItem>
+  //       <ListItem style={styles.categoryLink} title='Cars on Installment' >
+  //       </ListItem>
+  //       <ListItem style={styles.categoryLink} title='Cars Accessories' >
+  //       </ListItem>
+  //       <ListItem style={styles.categoryLink} title='Spare Parts' >
+  //       </ListItem>
+  //     </View>
+  //   )
+  // }
 }
 
-export default class SubCategories extends Component {
+class SubCategories extends Component {
   constructor(props) {
     super(props)
   }
 
+  UNSAFE_componentWillMount() {
+    this.props.fetchCategories()
+  }
 
   render() {
     const { subCategory } = this.props.route.params
@@ -67,3 +83,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 5
   },
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubCategories)

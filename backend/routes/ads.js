@@ -35,14 +35,13 @@ Ads.route('/')
     next()
 })
 .get((req, res, next) => {
-        console.log(req)
         con.query("SELECT * FROM ads", (err, result) => {
             if (err) {
               console.log("error: ", err);
               res.send(err)
             }
             else {
-            console.log("ads: ", result);
+            // console.log("ads: ", result);
             res.send(result)}
           })
     
