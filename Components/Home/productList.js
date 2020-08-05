@@ -26,6 +26,7 @@ class Home extends Component {
     return (
       <SafeAreaView>
         <ScrollView>
+          <Text>{this.props}</Text>
           <View style={styles.container}>
             <SearchBar containerStyle={styles.searchBar}
               inputContainerStyle={styles.inputContainerStyle}

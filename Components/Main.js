@@ -14,6 +14,7 @@ import SubCategories from './Home/SubCategories';
 import { fetchAds, fetchCategories } from '../redux/Actions'
 import { connect } from 'react-redux';
 import productList from './Home/productList';
+import adDetail from './Home/adDetail';
 
 const mapStateToProps = state => {
   return {
@@ -64,6 +65,7 @@ class Main extends Component {
 
   UNSAFE_componentWillMount() {
     this.props.fetchAds()
+    this.props.fetchCategories()
   }
 
   render() {
@@ -75,6 +77,7 @@ class Main extends Component {
           <Stack.Screen name='categories' component={Categories} />
           <Stack.Screen name='subcategories' component={SubCategories} />
           <Stack.Screen name="productlist" component={productList} options={{headerShown: false}} />
+          <Stack.Screen name="addetail" component={adDetail} options={{headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
       </SafeAreaProvider>

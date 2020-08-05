@@ -13,9 +13,68 @@ import { dirctry } from '../../shared/baseUrl'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const mapStateToProps = state => ({
-  ads: state.ads.ads
+  ads: state.ads.ads,
+  cat: state.categories
 })
 
+function RenderCat(props) {
+  if (props.props.cat.isLoading) {
+    return (
+      <Loading />
+    )
+  }
+  else if (props.props.cat.errMess) {
+    return (<Text>Network Error</Text>)
+  }
+  else
+    return (
+      // <Text>{JSON.stringify(props.props)}</Text>
+      props.props.cat.categories.map((item, index) => {
+        while (index < 9)
+          return (
+            <TouchableOpacity key={index} style={styles.categoryLink} onPress={() => props.props.navigation.navigate('subcategories', { cat_id: item.cat_id })} >
+              <View style={styles.iconBack}><Image style={{ width: 40, height: 40 }} source={{ uri: dirctry + item.img }} /></View>
+              <Text style={styles.productText} >{item.title}</Text>
+            </TouchableOpacity>
+          )
+      })
+    )
+}
+
+function RenderAds(props) {
+  if (props.props.ads.isLoading) {
+    return (
+      <Loading />
+    )
+  }
+  else if (props.props.ads.errMess) {
+    return (<Text>Network Error</Text>)
+  }
+  else
+    return (
+      // <Text>{JSON.stringify(props.props)}</Text>
+      props.props.ads.map((item, index) => {
+        return (
+          <Card containerStyle={styles.productCardColumn} key={index}>
+            <TouchableOpacity onPress={() => props.props.navigation.navigate('addetail', {adId: item.id, userId: item.user_id})} >
+              <View style={styles.imageConatiner}>
+                <Image containerStyle={styles.cardImage}
+                  resizeMethod="scale"
+                  resizeMode="stretch"
+
+                  source={{ uri: (dirctry + item.img1) }}
+                />
+              </View>
+              <View>
+                <Text style={styles.priceText}> Rs {item.price}</Text>
+                <Text>{item.title}</Text>
+              </View>
+            </TouchableOpacity>
+          </Card>
+        )
+      })
+    )
+}
 
 class Home extends Component {
   constructor(props) {
@@ -25,24 +84,6 @@ class Home extends Component {
     }
   }
   render() {
-    const renderAds = ({ item, index }) => {
-      return (
-        <Card containerStyle={styles.productCardColumn} key={index}>
-          <View style={styles.imageConatiner}>
-            <Image containerStyle={styles.cardImage}
-              // resizeMethod="scale"
-              // resizeMode="cover"
-              source={{ uri: (dirctry + item.img1) }}
-            />
-          </View>
-          <View>
-            <Text> Rs {item.price}</Text>
-            <Text>{item.title}</Text>
-          </View>
-        </Card>
-      )
-    }
-
     return (
       <SafeAreaView>
         <ScrollView>
@@ -57,99 +98,19 @@ class Home extends Component {
             <View style={styles.cardContainer}>
               <View style={styles.row}><Text>Browse Categories</Text><Text style={styles.link} onPress={() => this.props.navigation.navigate('categories')} >See all</Text></View>
               <View style={styles.categories}>
-                <TouchableOpacity style={styles.categoryLink} onPress={() => this.props.navigation.navigate('subcategories', {subCategory: 'mobile'})} >
-                  <View style={[styles.iconBack, { backgroundColor: '#fff700' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >MOBILES</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} onPress={() => this.props.navigation.navigate('subcategories', {subCategory: 'vehicle'})}>
-                  <View style={[styles.iconBack, { backgroundColor: '#42ffc3' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >VEHICLES</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} >
-                  <View style={[styles.iconBack, { backgroundColor: '#ed5328' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >PROPERTY FOR SALE</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} >
-                  <View style={[styles.iconBack, { backgroundColor: '#88fceb' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >PROPERTY FOR RENT</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} >
-                  <View style={[styles.iconBack, { backgroundColor: '#be90f5' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >ELECTRONICS & HOME APPLIANCES</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} >
-                  <View style={[styles.iconBack, { backgroundColor: '#cca35c' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >BIKES</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} >
-                  <View style={[styles.iconBack, { backgroundColor: '#f56c8c' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >BUISNESS, INDUSTRIAL & AGRICULTURAL</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} >
-                  <View style={[styles.iconBack, { backgroundColor: '#fce17e' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >SERVICES</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.categoryLink} >
-                  <View style={[styles.iconBack, { backgroundColor: '#f56740' }]}><Icon name='mobile' type='font-awesome' size={28} /></View>
-                  <Text style={styles.productText} >JOBS</Text>
-                </TouchableOpacity>
+                <RenderCat props={this.props} />
               </View>
             </View>
             <View style={styles.cardContainer} >
               <View style={styles.row}><Text>More on Land & Plots</Text><Text style={styles.link}>View more</Text></View>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}
               >
-                {/* <View style={styles.cardRow} > */}
-                {/* <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
-                  image={require('../../assets/images/plot.jpg')} >
-                  <View>
-                    <Text>Rs 31,500</Text>
-                  </View>
-                </Card>
-                <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
-                  image={require('../../assets/images/plot.jpg')} >
-                  <View>
-                    <Text>Rs 31,500</Text>
-                  </View>
-                </Card>
-                <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
-                  image={require('../../assets/images/plot.jpg')} >
-                  <View>
-                    <Text>Rs 31,500</Text>
-                  </View>
-                </Card>
-                <Card containerStyle={styles.productCard} imageWrapperStyle={styles.cardImage}
-                  image={require('../../assets/images/plot.jpg')} >
-                  <View>
-                    <Text>Rs 31,500</Text>
-                  </View>
-                </Card> */}
-                {/* </View> */}
               </ScrollView>
             </View>
             <View style={styles.cardContainer} >
               <View style={styles.row}><Text>Fresh Recommendations</Text></View>
               <View style={styles.cardColumn} >
-                {this.props.ads.map((item, index) => {
-                  return (
-                    <Card containerStyle={styles.productCardColumn} key={index}>
-                      <View style={styles.imageConatiner}>
-                        <Image containerStyle={styles.cardImage}
-                          resizeMethod="scale"
-                          resizeMode="stretch"
-                          
-                          source={{ uri: (dirctry + item.img1) }}
-                        />
-                      </View>
-                      <View>
-                        <Text style={styles.priceText}> Rs {item.price}</Text>
-                        <Text>{item.title}</Text>
-                      </View>
-                    </Card>
-                  )
-                })}
-                {/* <RenderAds item={this.props.ads[0]} /> */}
-
+                <RenderAds props={this.props} />
               </View>
             </View>
           </View>
@@ -213,6 +174,7 @@ const styles = StyleSheet.create({
   productText: {
     alignSelf: 'center',
     textAlign: 'center',
+    textTransform: "uppercase",
     fontSize: 10
   },
   productCard: {

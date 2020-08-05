@@ -5,6 +5,7 @@ import { persistStore, persistCombineReducers } from 'redux-persist'
 import AsyncStorage from '@react-native-community/async-storage'
 import {ads} from './ads'
 import {categories} from './categories'
+import {subcategories} from './subCategories'
 
 export const configureStore = () => {
     const config = {
@@ -16,7 +17,8 @@ export const configureStore = () => {
     const store = createStore(
         persistCombineReducers( config, {
             ads,
-            categories
+            categories,
+            subcategories
         }),
         compose(
             applyMiddleware(thunk, logger)

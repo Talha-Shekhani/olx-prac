@@ -1,9 +1,9 @@
 import * as ActionTypes from './ActionTypes'
-import { baseUrl } from '../shared/baseUrl'
+import { baseUrl, dirctry, api } from '../shared/baseUrl'
 
 export const fetchAds = () => (dispatch) => {
     dispatch(adsLoading(true))
-    return fetch(`https://bd471fa63c47.ngrok.io/ads`, {
+    return fetch(`${api}ads`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -42,7 +42,7 @@ export const addAllAds = (ads) => ({
 
 export const fetchCategories = () => (dispatch) => {
     dispatch(catLoading(true))
-    return fetch(`https://bd471fa63c47.ngrok.io/fetchCat`, {
+    return fetch(`${dirctry}fetchCat`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -78,4 +78,44 @@ export const catFailed = (errmess) => ({
 export const catAllAds = (cat) => ({
     type: ActionTypes.ADD_CAT,
     payload: cat
+})
+
+export const fetchSubCategories = () => (dispatch) => {
+    dispatch(subCatLoading(true))
+    return fetch(`${dirctry}fetchSubcat`, {
+        mode: 'no-cors',
+        method: 'GET'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText)
+            error.response = response
+            return error
+        }
+    },
+    error => {
+        var errmess = new Error(error.message)
+        return errmess
+    })
+    .then((response) => {return response.json()})
+    // .then (response => console.log((response)))
+    .then (response => dispatch(subCatAllAds(response)))
+    .catch(error => dispatch(subCatFailed(error)))
+}
+
+export const subCatLoading = () => ({
+    type: ActionTypes.SUBCAT_LOADING
+})
+
+export const subCatFailed = (errmess) => ({
+    type: ActionTypes.SUBCAT_FAILED,
+    payload: errmess
+})
+
+export const subCatAllAds = (subCat) => ({
+    type: ActionTypes.ADD_SUBCAT ,
+    payload: subCat
 })

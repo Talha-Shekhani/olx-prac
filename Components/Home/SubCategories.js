@@ -1,34 +1,41 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, ScrollView } from 'react-native';
 import { SearchBar, Icon, Card, Image, ListItem } from 'react-native-elements';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import SimIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { fetchCategories } from '../../redux/Actions'
+import { fetchSubCategories } from '../../redux/Actions'
 import { connect } from 'react-redux';
+import { Loading } from '../LoadingComponent';
+
+const mapDispatchToProps = dispatch => ({
+  fetchSubCategories: () => dispatch(fetchSubCategories())
+})
 
 const mapStateToProps = state => {
   return {
-    cat: state.categories.categories
+    subcat: state.subcategories,
+    // cat: state.categories
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  fetchCategories: () => dispatch(fetchCategories())
-})
-
-
 function RenderItem(props) {
-  // if (props.name == 'mobile') {
+  if (props.props.subcat.isLoading) {
+    return (
+      <Loading />
+    )
+  }
+  else if (props.props.subcat.errMess) {
+    return (<Text>Network Error</Text>)
+  }
+  else
     return (
       <View style={styles.container}>
-        {/* <Text>{JSON.stringify(props.props.cat)}</Text> */}
-        {props.props.cat.filter(item => item.name == props.name).map((item, index) => {
+        {/* <Text>{JSON.stringify(props)}</Text> */}
+        {props.props.subcat.subcategories.filter(item => item.cat_id == props.name).map((item, index) => {
           return (
-            <ListItem style={styles.categoryLink} onPress={() => props.navigation.navigate('productlist')} title={item.name} ></ListItem>
+            <ListItem style={styles.categoryLink} onPress={() => props.props.navigation.navigate('productlist', {subcat_id: item.subcat_id})} title={item.name} ></ListItem>
           )
         })}
         <ListItem style={styles.categoryLink} title='View All' >
@@ -58,15 +65,15 @@ class SubCategories extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    this.props.fetchCategories()
+    this.props.fetchSubCategories()
   }
 
   render() {
-    const { subCategory } = this.props.route.params
+    const { cat_id } = this.props.route.params
 
     return (
       <ScrollView>
-        <RenderItem name={subCategory} props={this.props} />
+        <RenderItem name={cat_id} props={this.props} />
       </ScrollView>
     )
   }
