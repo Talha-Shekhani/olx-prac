@@ -2,23 +2,23 @@ const express = require('../node_modules/express')
 const bodyParser = require('../node_modules/body-parser');
 const con = require("../connection");
 
-const Subcat = express.Router()
-Subcat.use(bodyParser.json())
+const loc = express.Router()
+loc.use(bodyParser.json())
 
-Subcat.route('/')
+loc.route('/')
 .all((req, res, next) => {
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
     next()
 })
 .get((req, res, next) => {
-        con.query("SELECT * FROM subcategories", (err, result) => {
+        con.query("SELECT * FROM location", (err, result) => {
             if (err) {
               console.log("error: ", err);
               res.send(err)
             }
             else {
-            // console.log("cat: ", result);
+            // console.log("loc: ", result);
             res.send(result)}
           })
     
@@ -34,4 +34,4 @@ Subcat.route('/')
     res.end(`Deleting all the dishes!`)
 })
 
-module.exports = Subcat
+module.exports = loc

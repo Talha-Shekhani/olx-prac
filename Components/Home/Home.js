@@ -4,6 +4,7 @@ import { SearchBar, Icon, Card, Image } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context'
+import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { connect } from 'react-redux';
 import { baseUrl } from '../../shared/baseUrl';
 import { Loading } from '../LoadingComponent';
@@ -14,7 +15,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const mapStateToProps = state => ({
   ads: state.ads.ads,
-  cat: state.categories
+  cat: state.categories,
+  loc: state.loc
 })
 
 function RenderCat(props) {
@@ -55,19 +57,21 @@ function RenderAds(props) {
       // <Text>{JSON.stringify(props.props)}</Text>
       props.props.ads.map((item, index) => {
         return (
-          <Card containerStyle={styles.productCardColumn} key={index}>
-            <TouchableOpacity onPress={() => props.props.navigation.navigate('addetail', {adId: item.id, userId: item.user_id})} >
+          <Card containerStyle={styles.productCardColumn} key={index} >
+            <TouchableOpacity key={index} onPress={() => props.props.navigation.navigate('addetail', {adId: item.id, userId: item.user_id})} >
               <View style={styles.imageConatiner}>
                 <Image containerStyle={styles.cardImage}
                   resizeMethod="scale"
                   resizeMode="stretch"
-
                   source={{ uri: (dirctry + item.img1) }}
                 />
               </View>
               <View>
                 <Text style={styles.priceText}> Rs {item.price}</Text>
-                <Text>{item.title}</Text>
+                <Text >{item.title}</Text>
+                <Text style={styles.loc} ><MatIcon name="map-marker" size={10} /><Text style={styles.locText}>{props.props.loc.loc.filter(itm => itm.area_id == item.area_id).map((itm, index) => {
+                                    return (<Text key={index}>  {itm.area}, {itm.city}</Text>)
+                                    })}</Text> </Text>
               </View>
             </TouchableOpacity>
           </Card>
@@ -190,7 +194,7 @@ const styles = StyleSheet.create({
   },
   imageConatiner: {
     width: '94%',
-    height: '70%',
+    height: '62%',
     margin: 5
   },
   cardImage: {
@@ -217,6 +221,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginTop: 5,
+  },
+  locText: {
+    fontSize: 10
+  },
+  loc: {
+    marginTop: 10
   }
 })
 

@@ -6,6 +6,8 @@ const bodyParser = require('./node_modules/body-parser')
 const Ads = require('./routes/ads')
 const Cat = require('./routes/categories')
 const Subcat = require('./routes/subCategories')
+const loc = require('./routes/location')
+const user = require('./routes/users')
 
 // const hostname = '192.168.1.63'
 const hostname = 'localhost'
@@ -19,6 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/ads', Ads)
 app.use('/fetchSubcat', Subcat )
 app.use('/fetchCat', Cat )
+app.use('/loc', loc )
+app.use('/users', user )
 app.use(express.static(__dirname+ '/assets/images'))
 app.use((req, res, next) => {
     console.log(req.headers)

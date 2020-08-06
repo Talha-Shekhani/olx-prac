@@ -35,7 +35,7 @@ function RenderItem(props) {
         {/* <Text>{JSON.stringify(props)}</Text> */}
         {props.props.subcat.subcategories.filter(item => item.cat_id == props.name).map((item, index) => {
           return (
-            <ListItem style={styles.categoryLink} onPress={() => props.props.navigation.navigate('productlist', {subcat_id: item.subcat_id})} title={item.name} ></ListItem>
+            <ListItem key={index} style={styles.categoryLink} onPress={() => props.props.navigation.navigate('productlist', {subcat_id: item.subcat_id})} title={item.name} ></ListItem>
           )
         })}
         <ListItem style={styles.categoryLink} title='View All' >

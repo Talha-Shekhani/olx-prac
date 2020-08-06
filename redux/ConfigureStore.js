@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 import {ads} from './ads'
 import {categories} from './categories'
 import {subcategories} from './subCategories'
+import {loc} from './location'
+import {users} from './users'
 
 export const configureStore = () => {
     const config = {
@@ -18,7 +20,9 @@ export const configureStore = () => {
         persistCombineReducers( config, {
             ads,
             categories,
-            subcategories
+            subcategories,
+            loc,
+            users
         }),
         compose(
             applyMiddleware(thunk, logger)

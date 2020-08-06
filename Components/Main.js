@@ -11,10 +11,11 @@ import Home from './Home/Home'
 import Chat from './Chats/Chat';
 import Categories from './Home/Categories';
 import SubCategories from './Home/SubCategories';
-import { fetchAds, fetchCategories } from '../redux/Actions'
+import { fetchAds, fetchCategories, fetchLoc } from '../redux/Actions'
 import { connect } from 'react-redux';
 import productList from './Home/productList';
-import adDetail from './Home/adDetail';
+import adDetail from './Home/adDetail'
+import Login from './Login/Login';
 
 const mapStateToProps = state => {
   return {
@@ -23,7 +24,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   fetchAds: () => dispatch(fetchAds()),
-  fetchCategories: () => dispatch(fetchCategories())
+  fetchCategories: () => dispatch(fetchCategories()),
+  fetchLoc: () => dispatch(fetchLoc())
 })
 
 const Tab = createMaterialBottomTabNavigator();
@@ -66,13 +68,15 @@ class Main extends Component {
   UNSAFE_componentWillMount() {
     this.props.fetchAds()
     this.props.fetchCategories()
+    this.props.fetchLoc()
   }
 
   render() {
     return (
       <SafeAreaProvider>
         <NavigationContainer> 
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="loginEmail">
+          <Stack.Screen name="loginEmail" component={Login} options={{headerShown: false}} />
           <Stack.Screen name="root" component={tabNavigation} options={{headerShown: false}} />
           <Stack.Screen name='categories' component={Categories} />
           <Stack.Screen name='subcategories' component={SubCategories} />
