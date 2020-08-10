@@ -9,12 +9,11 @@ import { connect } from 'react-redux';
 import { baseUrl } from '../../shared/baseUrl';
 import { Loading } from '../LoadingComponent';
 import { postComment } from '../../redux/Actions'
-import { ads } from '../../redux/ads';
-import { dirctry } from '../../shared/baseUrl'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ads } from '../../redux/ads'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { fetchUser } from '../../redux/Actions'
 import NumberFormat from 'react-number-format';
-const Intl = require('react-native-intl')
+// const Intl = require('react-native-intl')
 // const en = new Intl.Translation('en-US')
 
 const mapStateToProps = state => ({
@@ -48,7 +47,7 @@ function RenderRelatedAds(props) {
                 <Image containerStyle={styles.cardImage}
                   resizeMethod="scale"
                   resizeMode="stretch"
-                  source={{ uri: (dirctry + item.img1) }}
+                  source={{ uri: (baseUrl + item.img1) }}
                 />
               </View>
               <View>
@@ -80,7 +79,7 @@ function RenderAd(props) {
         return (
           <View key={index} style={styles.container} >
             <View style={styles.imgConatiner}>
-              <Image source={{ uri: dirctry + item.img1 }} resizeMode='stretch' style={{ width: '100%', height: '100%', opacity: 0.7 }} />
+              <Image source={{ uri: baseUrl + item.img1 }} resizeMode='stretch' style={{ width: '100%', height: '100%', opacity: 0.7 }} />
               {/* <Text>{JSON.stringify(props.props.user)}</Text> */}
               {/* <Text>{JSON.stringify(props.props.ad.ads.filter(item => item.id == props.adId )[0])}</Text> */}
             </View>
@@ -108,10 +107,10 @@ function RenderAd(props) {
               {props.props.user.users.map((item, index) => {
                 return (
                   <View>
-                    <Image source={{ uri: dirctry + item.img }} />
+                    <Image source={{ uri: baseUrl + item.img }} />
                     <View>
                       <Text>{item.name}</Text>
-                      {date = new Date(item.created_at)}
+                      {/* {date = new Date(item.created_at)} */}
                       <Text>Member since  </Text>
                       {/* {new Intl.DateTimeFormat('en-US').format(date).then((str) => {
                         console.log(str)

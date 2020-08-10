@@ -9,7 +9,7 @@ import SimIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import SubCategories from './SubCategories';
 import { connect } from 'react-redux';
-import { dirctry } from '../../shared/baseUrl';
+import { baseUrl } from '../../shared/baseUrl';
 import { Loading } from '../LoadingComponent';
 
 const mapStateToProps = state => {
@@ -35,7 +35,7 @@ function RenderItem(props) {
           <ListItem containerStyle={styles.navLink} onPress={() => props.props.navigation.navigate('subcategories', { cat_id: item.cat_id })}
             key={index}
             title={item.title}
-            leftAvatar={{ source: { uri: dirctry + item.img } }}
+            leftAvatar={{ source: { uri: baseUrl + item.img } }}
             rightIcon={<Icon style={styles.arrowIcon} name='angle-right' type='font-awesome' size={24} />} >
           </ListItem>
         )

@@ -1,9 +1,9 @@
 import * as ActionTypes from './ActionTypes'
-import { baseUrl, dirctry, api } from '../shared/baseUrl'
+import { baseUrl } from '../shared/baseUrl'
 
 export const fetchAds = () => (dispatch) => {
     dispatch(adsLoading(true))
-    return fetch(`${dirctry}ads`, {
+    return fetch(`${baseUrl}ads`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -42,7 +42,7 @@ export const addAllAds = (ads) => ({
 
 export const fetchCategories = () => (dispatch) => {
     dispatch(catLoading(true))
-    return fetch(`${dirctry}fetchCat`, {
+    return fetch(`${baseUrl}fetchCat`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -82,7 +82,7 @@ export const catAllAds = (cat) => ({
 
 export const fetchSubCategories = () => (dispatch) => {
     dispatch(subCatLoading(true))
-    return fetch(`${dirctry}fetchSubcat`, {
+    return fetch(`${baseUrl}fetchSubcat`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -122,7 +122,7 @@ export const subCatAllAds = (subCat) => ({
 
 export const fetchLoc = () => (dispatch) => {
     dispatch(locLoading(true))
-    return fetch(`${dirctry}loc`, {
+    return fetch(`${baseUrl}loc`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -161,7 +161,7 @@ export const addAllLoc = (loc) => ({
 
 export const fetchUser = (userId) => (dispatch) => {
     dispatch(userLoading(true))
-    return fetch(`${dirctry}users/${userId}`, {
+    return fetch(`${baseUrl}users/${userId}`, {
         mode: 'no-cors',
         method: 'GET'
     })
@@ -197,3 +197,27 @@ export const addUser = (user) => ({
     type: ActionTypes.ADD_USER,
     payload: user
 })
+
+export const checkUser = (email, password) => (dispatch) => {
+    return fetch(`${baseUrl}users/${email}/${password}`, {
+        mode: 'no-cors',
+        method: 'GET'
+    })
+    .then(response => {
+        if (response.ok) {
+            return response
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText)
+            error.response = response
+            return error
+        }
+    },
+    error => {
+        var errmess = new Error(error.message)
+        return errmess
+    })
+    .then((response) => {return response.json()})
+    .then (response => {return response})
+    .catch(err => {return err})
+}

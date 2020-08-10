@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform, ScrollView, FlatList } from 'react-native';
-import { Icon, Input, CheckBox, Button } from 'react-native-elements';
+import { StyleSheet, Text, View, Platform, ScrollView, FlatList, Alert } from 'react-native';
+import { Icon, Input, Image, Button } from 'react-native-elements';
+import { TextValidator, Form } from 'react-native-validator-form'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,13 +9,18 @@ import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { connect } from 'react-redux';
 import { baseUrl } from '../../shared/baseUrl';
 import { Loading } from '../LoadingComponent';
-import { postComment } from '../../redux/Actions'
 import { ads } from '../../redux/ads';
-import { dirctry } from '../../shared/baseUrl'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { isEmail } from 'react-native-validator-form/lib/ValidationRules';
+import { fetchUser } from '../../redux/Actions';
+import * as SecureStore from 'expo-secure-store'
 
 const mapStateToProps = state => ({
+    user: state.users
+})
 
+const mapDispatchToProps = dispatch => ({
+    fetchUser: (userEmail) => dispatch(fetchUser(userEmail))
 })
 
 
@@ -23,33 +29,59 @@ class Login extends Component {
         super(props)
         this.state = {
             email: '',
-            password: '',
-            remember: false
+            errmsg: ''
         }
     }
+
+    handleSubmit() {
+        if (this.state.email != '') {
+            // Alert.alert(JSON.stringify(this.props.user))
+            if (isEmail(this.state.email)) {
+                this.props.fetchUser(this.state.email)
+                if (this.props.user.users[0].email != '')
+                    if (this.state.email == this.props.user.users[0].email) {
+                        SecureStore.setItemAsync('userdata',
+                            JSON.stringify({ email: this.state.email}))
+                            .then(() => this.props.navigation.navigate('password'))
+                            .catch((err) => console.log('Could not save user info', err))
+                    }
+                    else this.setState({ errmsg: 'Email not Matched' })
+                else this.setState({ errmsg: 'Network Error' })
+            }
+            else this.setState({ errmsg: 'Not Valid Email' })
+        }
+        else this.setState({ errmsg: 'Email is Required' })
+    }
+
     render() {
         return (
-            <SafeAreaView>
-                <ScrollView>
+            <SafeAreaView style={{ backgroundColor: 'white' }}>
+                <ScrollView style={{ height: '90%', backgroundColor: 'white' }}  >
                     <View style={styles.container} >
-                        <Input placeholder='Email'
-                            leftIcon={{ type: 'font-awesome', name: 'user-o' }}
-                            onChangeText={(email) => this.setState({ email: email })}
-                            value={this.state.email}
-                            containerStyle={styles.formInput} />
-                        <Input placeholder='Password'
-                            leftIcon={{ type: 'font-awesome', name: 'key' }}
-                            onChangeText={(password) => this.setState({ password: password })}
-                            value={this.state.password}
-                            containerStyle={styles.formInput} />
-                    </View>
-                    <View style={styles.formButton} >
-                        <Button
-                            // onPress={() => this.handleLogin()}
-                            title='Login'
-                            buttonStyle={{ backgroundColor: '#232323' }} />
+                        <Image source={{ uri: baseUrl + 'boy.png' }} style={styles.image} />
+                        <Text style={styles.title}>Enter your Email</Text>
+                        <Text style={styles.heading}>Email</Text>
+                            <Input
+                                inputContainerStyle={styles.inputContainer}
+                                containerStyle={styles.formInput}
+                                inputStyle={styles.input}
+                                textContentType="emailAddress"
+                                keyboardType="email-address"
+                                name="email"
+                                renderErrorMessage={true}
+                                errorMessage={this.state.errmsg}
+                                placeholder="Email"
+                                onChangeText={(email) => this.setState({ email: email })}
+                                value={this.state.email}
+                            />
                     </View>
                 </ScrollView>
+                <View style={styles.formButton} >
+                    <Button
+                        onPress={() => this.handleSubmit()} 
+                        title='Next'
+                        buttonStyle={{ backgroundColor: '#232323' }} />
+                </View>
             </SafeAreaView >
         )
     }
@@ -59,25 +91,33 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-between',
         alignContent: 'space-between',
-        margin: 20,
+        margin: 25,
+        backgroundColor: 'white'
     },
-    imageContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        margin: 20
+    title: {
+        fontSize: 22,
+        fontWeight: 'bold'
+    },
+    heading: {
+        fontSize: 16,
+        marginTop: 40,
     },
     image: {
         margin: 10,
         width: 80,
-        height: 60
+        height: 80
     },
     formInput: {
-        margin: 5,
-        width: '100%'
+        marginVertical: 10,
+        width: '100%',
+        paddingHorizontal: 0,
     },
-    formCheckbox: {
-        margin: 40,
-        backgroundColor: null
+    input: {
+        paddingHorizontal: 10,
+    },
+    inputContainer: {
+        backgroundColor: '#eee',
+        borderBottomColor: 'white'
     },
     formButton: {
         width: '90%',
@@ -88,4 +128,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default connect(mapStateToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -9,8 +9,7 @@ import { connect } from 'react-redux';
 import { baseUrl } from '../../shared/baseUrl';
 import { Loading } from '../LoadingComponent';
 import { postComment } from '../../redux/Actions'
-import { ads } from '../../redux/ads';
-import { dirctry } from '../../shared/baseUrl'
+import { ads } from '../../redux/ads'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const mapStateToProps = state => ({
@@ -35,7 +34,7 @@ function RenderCat(props) {
         while (index < 9)
           return (
             <TouchableOpacity key={index} style={styles.categoryLink} onPress={() => props.props.navigation.navigate('subcategories', { cat_id: item.cat_id })} >
-              <View style={styles.iconBack}><Image style={{ width: 40, height: 40 }} source={{ uri: dirctry + item.img }} /></View>
+              <View style={styles.iconBack}><Image style={{ width: 40, height: 40 }} source={{ uri: baseUrl + item.img }} /></View>
               <Text style={styles.productText} >{item.title}</Text>
             </TouchableOpacity>
           )
@@ -63,7 +62,7 @@ function RenderAds(props) {
                 <Image containerStyle={styles.cardImage}
                   resizeMethod="scale"
                   resizeMode="stretch"
-                  source={{ uri: (dirctry + item.img1) }}
+                  source={{ uri: (baseUrl + item.img1) }}
                 />
               </View>
               <View>

@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import productList from './Home/productList';
 import adDetail from './Home/adDetail'
 import Login from './Login/Login';
+import Password from './Login/Password';
 
 const mapStateToProps = state => {
   return {
@@ -77,6 +78,7 @@ class Main extends Component {
         <NavigationContainer> 
         <Stack.Navigator initialRouteName="loginEmail">
           <Stack.Screen name="loginEmail" component={Login} options={{headerShown: false}} />
+          <Stack.Screen name="password" component={Password} options={{headerShown: false}} />
           <Stack.Screen name="root" component={tabNavigation} options={{headerShown: false}} />
           <Stack.Screen name='categories' component={Categories} />
           <Stack.Screen name='subcategories' component={SubCategories} />
