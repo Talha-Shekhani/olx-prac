@@ -35,10 +35,10 @@ function RenderItem(props) {
         {/* <Text>{JSON.stringify(props)}</Text> */}
         {props.props.subcat.subcategories.filter(item => item.cat_id == props.catId).map((item, index) => {
           return (
-            <ListItem key={index} style={styles.categoryLink} onPress={() => props.props.navigation.navigate('productlist', {subcat_id: item.subcat_id})} title={item.title} ></ListItem>
+            <ListItem key={index} style={styles.categoryLink} onPress={() => props.props.navigation.navigate('productlist', {subcatId: item.subcat_id, catId: item.cat_id})} title={item.title} ></ListItem>
           )
         })}
-        <ListItem style={styles.categoryLink} title='View All' >
+        <ListItem style={styles.categoryLink} title='View All' onPress={() => props.props.navigation.navigate('productlist', {subcat_id: 'none', catId: props.catId})} >
         </ListItem>
       </View>
     )
@@ -69,6 +69,9 @@ class SubCategories extends Component {
   }
 
   render() {
+    this.props.navigation.setOptions({
+      title: this.props.route.params.catName
+    })
     const { cat_id } = this.props.route.params
 
     return (

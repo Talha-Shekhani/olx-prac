@@ -32,7 +32,8 @@ class Password extends Component {
         this.state = {
             email: '',
             password: '',
-            errmsg: ''
+            errmsg: '',
+            userId: '',
         }
     }
 
@@ -42,7 +43,7 @@ class Password extends Component {
                 // Alert.alert(JSON.stringify(userinfo))
                 if (userdata) {
                     let userinfo = JSON.parse(userdata)
-                    this.setState({ email: userinfo.email })
+                    this.setState({ email: userinfo.email, userId: userinfo.userId })
                 }
             })
             .catch((err) => console.log('Cannot find user info' + err))
@@ -59,7 +60,7 @@ class Password extends Component {
                     }).then(() => {
                         if (check != false)
                             SecureStore.setItemAsync('userdata',
-                                JSON.stringify({ email: this.state.email, password: this.state.password }))
+                                JSON.stringify({ email: this.state.email, password: this.state.password, userId: this.state.userId }))
                                 .then(() => this.props.navigation.navigate('root'))
                                 .catch((err) => console.log('Could not save user info', err))
                         else this.setState({ errmsg: 'password not Matched' })

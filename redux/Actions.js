@@ -3,27 +3,31 @@ import { baseUrl } from '../shared/baseUrl'
 
 export const fetchAds = () => (dispatch) => {
     dispatch(adsLoading(true))
-    return fetch(`${baseUrl}ads`, {
-        mode: 'no-cors',
-        method: 'GET'
-    })
-    .then(response => {
-        if (response.ok) {
-            return response
-        }
-        else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText)
-            error.response = response
-            return error
-        }
-    },
-    error => {
-        var errmess = new Error(error.message)
-        return errmess
-    })
-    .then((response) => {return response.json()})
-    .then (response => dispatch(addAllAds(response)))
-    .catch(error => dispatch(adsFailed(error)))
+    async function fetchData() {
+        return await fetch(`${baseUrl}ads`, {
+            mode: 'no-cors',
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response
+                }
+                else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                    error.response = response
+                    return error
+                }
+            },
+                error => {
+                    var errmess = new Error(error.message)
+                    return errmess
+                })
+            .then((response) => { return response.json() })
+            .then(response => dispatch(addAllAds(response)))
+            .catch(error => dispatch(adsFailed(error)))
+    }
+    fetchData()
+
 }
 
 export const adsLoading = () => ({
@@ -42,28 +46,31 @@ export const addAllAds = (ads) => ({
 
 export const fetchCategories = () => (dispatch) => {
     dispatch(catLoading(true))
-    return fetch(`${baseUrl}fetchCat`, {
-        mode: 'no-cors',
-        method: 'GET'
-    })
-    .then(response => {
-        if (response.ok) {
-            return response
-        }
-        else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText)
-            error.response = response
-            return error
-        }
-    },
-    error => {
-        var errmess = new Error(error.message)
-        return errmess
-    })
-    .then((response) => {return response.json()})
-    // .then (response => console.log((response)))
-    .then (response => dispatch(catAllAds(response)))
-    .catch(error => dispatch(catFailed(error)))
+    async function fetchData() {
+        return await fetch(`${baseUrl}fetchCat`, {
+            mode: 'no-cors',
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response
+                }
+                else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                    error.response = response
+                    return error
+                }
+            },
+                error => {
+                    var errmess = new Error(error.message)
+                    return errmess
+                })
+            .then((response) => { return response.json() })
+            // .then (response => console.log((response)))
+            .then(response => dispatch(catAllAds(response)))
+            .catch(error => dispatch(catFailed(error)))
+    }
+    fetchData()
 }
 
 export const catLoading = () => ({
@@ -82,28 +89,31 @@ export const catAllAds = (cat) => ({
 
 export const fetchSubCategories = () => (dispatch) => {
     dispatch(subCatLoading(true))
-    return fetch(`${baseUrl}fetchSubcat`, {
+    async function fetchData () {
+    return await fetch(`${baseUrl}fetchSubcat`, {
         mode: 'no-cors',
         method: 'GET'
     })
-    .then(response => {
-        if (response.ok) {
-            return response
-        }
-        else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText)
-            error.response = response
-            return error
-        }
-    },
-    error => {
-        var errmess = new Error(error.message)
-        return errmess
-    })
-    .then((response) => {return response.json()})
-    // .then (response => console.log((response)))
-    .then (response => dispatch(subCatAllAds(response)))
-    .catch(error => dispatch(subCatFailed(error)))
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                error.response = response
+                return error
+            }
+        },
+            error => {
+                var errmess = new Error(error.message)
+                return errmess
+            })
+        .then((response) => { return response.json() })
+        // .then (response => console.log((response)))
+        .then(response => dispatch(subCatAllAds(response)))
+        .catch(error => dispatch(subCatFailed(error)))
+    }
+    fetchData()
 }
 
 export const subCatLoading = () => ({
@@ -116,7 +126,7 @@ export const subCatFailed = (errmess) => ({
 })
 
 export const subCatAllAds = (subCat) => ({
-    type: ActionTypes.ADD_SUBCAT ,
+    type: ActionTypes.ADD_SUBCAT,
     payload: subCat
 })
 
@@ -126,23 +136,23 @@ export const fetchLoc = () => (dispatch) => {
         mode: 'no-cors',
         method: 'GET'
     })
-    .then(response => {
-        if (response.ok) {
-            return response
-        }
-        else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText)
-            error.response = response
-            return error
-        }
-    },
-    error => {
-        var errmess = new Error(error.message)
-        return errmess
-    })
-    .then((response) => {return response.json()})
-    .then (response => dispatch(addAllLoc(response)))
-    .catch(error => dispatch(locFailed(error)))
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                error.response = response
+                return error
+            }
+        },
+            error => {
+                var errmess = new Error(error.message)
+                return errmess
+            })
+        .then((response) => { return response.json() })
+        .then(response => dispatch(addAllLoc(response)))
+        .catch(error => dispatch(locFailed(error)))
 }
 
 export const locLoading = () => ({
@@ -165,23 +175,23 @@ export const fetchUser = (userId) => (dispatch) => {
         mode: 'no-cors',
         method: 'GET'
     })
-    .then(response => {
-        if (response.ok) {
-            return response
-        }
-        else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText)
-            error.response = response
-            return error
-        }
-    },
-    error => {
-        var errmess = new Error(error.message)
-        return errmess
-    })
-    .then((response) => {return response.json()})
-    .then (response => dispatch(addUser(response)))
-    .catch(error => dispatch(userFailed(error)))
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                error.response = response
+                return error
+            }
+        },
+            error => {
+                var errmess = new Error(error.message)
+                return errmess
+            })
+        .then((response) => { return response.json() })
+        .then(response => dispatch(addUser(response)))
+        .catch(error => dispatch(userFailed(error)))
 }
 
 export const userLoading = () => ({
@@ -203,21 +213,21 @@ export const checkUser = (email, password) => (dispatch) => {
         mode: 'no-cors',
         method: 'GET'
     })
-    .then(response => {
-        if (response.ok) {
-            return response
-        }
-        else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText)
-            error.response = response
-            return error
-        }
-    },
-    error => {
-        var errmess = new Error(error.message)
-        return errmess
-    })
-    .then((response) => {return response.json()})
-    .then (response => {return response})
-    .catch(err => {return err})
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                error.response = response
+                return error
+            }
+        },
+            error => {
+                var errmess = new Error(error.message)
+                return errmess
+            })
+        .then((response) => { return response.json() })
+        .then(response => { return response })
+        .catch(err => { return err })
 }

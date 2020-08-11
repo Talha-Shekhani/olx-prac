@@ -7,10 +7,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import SimIcon from 'react-native-vector-icons/SimpleLineIcons'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import SubCategories from './SubCategories';
-import { connect } from 'react-redux';
-import { baseUrl } from '../../shared/baseUrl';
-import { Loading } from '../LoadingComponent';
+import SubCategories from '../Home/SubCategories'
+import { connect } from 'react-redux'
+import { baseUrl } from '../../shared/baseUrl'
+import { Loading } from '../LoadingComponent'
 
 const mapStateToProps = state => {
   return {
@@ -29,7 +29,7 @@ function RenderItem(props) {
   }
   else
     return (
-    // <Text>{JSON.stringify(props.props)}</Text>
+      // <Text>{JSON.stringify(props.props)}</Text>
       props.props.cat.categories.map((item, index) => {
         return (
           <ListItem containerStyle={styles.navLink} onPress={() => props.props.navigation.navigate('subcategories', { cat_id: item.cat_id, catName: item.title })}
@@ -43,18 +43,20 @@ function RenderItem(props) {
     )
 }
 
-class Categories extends Component {
+class SellCategories extends Component {
   constructor(props) {
     super(props)
   }
 
   render() {
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <RenderItem props={this.props} />
-        </View>
-      </ScrollView>
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles.container}>
+            <RenderItem props={this.props} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     )
   }
 }
@@ -96,4 +98,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default connect(mapStateToProps)(Categories)
+export default connect(mapStateToProps)(SellCategories)

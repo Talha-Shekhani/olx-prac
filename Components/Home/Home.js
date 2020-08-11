@@ -10,6 +10,7 @@ import { baseUrl } from '../../shared/baseUrl';
 import { Loading } from '../LoadingComponent';
 import { postComment } from '../../redux/Actions'
 import { ads } from '../../redux/ads'
+import * as SecureStore from 'expo-secure-store'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const mapStateToProps = state => ({
@@ -33,7 +34,7 @@ function RenderCat(props) {
       props.props.cat.categories.map((item, index) => {
         while (index < 9)
           return (
-            <TouchableOpacity key={index} style={styles.categoryLink} onPress={() => props.props.navigation.navigate('subcategories', { cat_id: item.cat_id })} >
+            <TouchableOpacity key={index} style={styles.categoryLink} onPress={() => props.props.navigation.navigate('subcategories', { cat_id: item.cat_id, catName: item.title })} >
               <View style={styles.iconBack}><Image style={{ width: 40, height: 40 }} source={{ uri: baseUrl + item.img }} /></View>
               <Text style={styles.productText} >{item.title}</Text>
             </TouchableOpacity>
@@ -57,7 +58,8 @@ function RenderAds(props) {
       props.props.ads.map((item, index) => {
         return (
           <Card containerStyle={styles.productCardColumn} key={index} >
-            <TouchableOpacity key={index} onPress={() => props.props.navigation.navigate('addetail', {adId: item.id, userId: item.user_id})} >
+            <View style={styles.iconHBack} ><Icon name={props.favId == item.id ? 'heart' : 'heart-o'} type="font-awesome" style={styles.iconHeart} color={'red'} /></View>
+            <TouchableOpacity key={index} onPress={() => props.props.navigation.navigate('addetail', { adId: item.id, userId: item.user_id })} >
               <View style={styles.imageConatiner}>
                 <Image containerStyle={styles.cardImage}
                   resizeMethod="scale"
@@ -69,8 +71,8 @@ function RenderAds(props) {
                 <Text style={styles.priceText}> Rs {item.price}</Text>
                 <Text >{item.title}</Text>
                 <Text style={styles.loc} ><MatIcon name="map-marker" size={10} /><Text style={styles.locText}>{props.props.loc.loc.filter(itm => itm.area_id == item.area_id).map((itm, index) => {
-                                    return (<Text key={index}>  {itm.area}, {itm.city}</Text>)
-                                    })}</Text> </Text>
+                  return (<Text key={index}>  {itm.area}, {itm.city}</Text>)
+                })}</Text> </Text>
               </View>
             </TouchableOpacity>
           </Card>
@@ -83,9 +85,23 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      search: ''
+      search: '',
+      userId: '',
     }
   }
+
+  componentDidMount() {
+    SecureStore.getItemAsync('userdata')
+      .then((userdata) => {
+        // Alert.alert(JSON.stringify(userinfo))
+        if (userdata) {
+          let userinfo = JSON.parse(userdata)
+          this.setState({userId: userinfo.userId})
+        }
+      })
+      .catch((err) => console.log('Cannot find user info' + err))
+  }
+
   render() {
     return (
       <SafeAreaView>
@@ -113,7 +129,7 @@ class Home extends Component {
             <View style={styles.cardContainer} >
               <View style={styles.row}><Text>Fresh Recommendations</Text></View>
               <View style={styles.cardColumn} >
-                <RenderAds props={this.props} />
+                <RenderAds props={this.props} favId={this.state.userId} />
               </View>
             </View>
           </View>
@@ -172,7 +188,21 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+  iconHBack: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    borderRadius: 50,
+    width: 40,
+    height: 40,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    zIndex: 2,
+    // elevation: 20,
+  },
+  iconHeart: {
+    zIndex: 2
   },
   productText: {
     alignSelf: 'center',

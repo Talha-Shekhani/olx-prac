@@ -7,12 +7,79 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { connect } from 'react-redux';
 import { baseUrl } from '../../shared/baseUrl';
+import NumberFormat from 'react-number-format';
 import { Loading } from '../LoadingComponent';
 import { postComment } from '../../redux/Actions'
 
 const mapStateToProps = state => ({
-  dishes: state.dishes
+  cat: state.categories,
+  subcat: state.subcategories,
+  ads: state.ads,
 })
+
+function RenderAds(props) {
+  if (props.props.ads.isLoading) {
+    return (
+      <Loading />
+    )
+  }
+  else if (props.props.ads.errMess) {
+    return (<Text>Network Error</Text>)
+  }
+  else
+    if (props.subcatId == undefined)
+      return (
+        props.props.ads.ads.filter(item => item.category_id == props.catId).map((item, index) => {
+          return (
+            <Card containerStyle={styles.productCardColumn}>
+              <View style={styles.product} >
+                <View style={styles.imageConatiner}>
+                  <Image containerStyle={styles.cardImage}
+                    resizeMethod="scale"
+                    resizeMode="stretch"
+                    source={{ uri: baseUrl + item.img1 }}
+                  />
+                </View>
+                <View style={styles.rightSide} >
+                  <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} prefix={'Rs '} renderText={formattedValue => <Text style={styles.productPrice} >{formattedValue}</Text>} />
+                  <Text style={styles.productTitle} numberOfLines={1}>{item.title}</Text>
+                  <View style={styles.rightBottom} >
+                    <Text style={styles.productLoc}><MatIcon name="map-marker" size={10} />Karachi, Sindh</Text>
+                    <Text style={styles.productDate}>23 JUL</Text>
+                  </View>
+                </View>
+              </View>
+            </Card>
+          )
+        })
+      )
+    else
+      return (
+        props.props.ads.ads.filter(item => item.category_id == props.catId && item.sub_category_id == props.subcatId).map((item, index) => {
+          return (
+            <Card containerStyle={styles.productCardColumn} key={index}>
+              <View style={styles.product} >
+                <View style={styles.imageConatiner}>
+                  <Image containerStyle={styles.cardImage}
+                    resizeMethod="scale"
+                    resizeMode="stretch"
+                    source={{ uri: baseUrl + item.img1 }}
+                  />
+                </View>
+                <View style={styles.rightSide} >
+                  <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} prefix={'Rs '} renderText={formattedValue => <Text style={styles.productPrice} >{formattedValue}</Text>} />
+                  <Text style={styles.productTitle} numberOfLines={1}>{item.title}</Text>
+                  <View style={styles.rightBottom} >
+                    <Text style={styles.productLoc}><MatIcon name="map-marker" size={10} />Karachi, Sindh</Text>
+                    <Text style={styles.productDate}>23 JUL</Text>
+                  </View>
+                </View>
+              </View>
+            </Card>
+          )
+        })
+      )
+}
 
 class Home extends Component {
   constructor(props) {
@@ -21,12 +88,15 @@ class Home extends Component {
       search: ''
     }
   }
+
   render() {
 
+    const { catId, subcatId } = this.props.route.params
     return (
-      <SafeAreaView>
-        <ScrollView>
-          <Text>{this.props}</Text>
+      <SafeAreaView >
+        <ScrollView >
+          {/* <Text>{JSON.stringify(this.props)}</Text> */}
+          <Text>{catId + ' ' + subcatId}</Text>
           <View style={styles.container}>
             <SearchBar containerStyle={styles.searchBar}
               inputContainerStyle={styles.inputContainerStyle}
@@ -35,27 +105,8 @@ class Home extends Component {
               value={this.state.search}
               onChangeText={(val) => this.setState({ search: val })}
               platform='android' />
-
             <View style={styles.cardContainer} >
-              <Card containerStyle={styles.productCardColumn}>
-                <View style={styles.product} >
-                  <View style={styles.imageConatiner}>
-                    <Image containerStyle={styles.cardImage}
-                      resizeMethod="scale"
-                      resizeMode="cover"
-                      source={require('../../assets/images/plot.jpg')}
-                    />
-                  </View>
-                  <View style={styles.rightSide} >
-                    <Text style={styles.productPrice}>Rs 79,500</Text>
-                    <Text style={styles.productTitle} numberOfLines={1}>Samsung 16gb RAM , 64 gb ROM 10/10</Text>
-                    <View style={styles.rightBottom} >
-                      <Text style={styles.productLoc}><MatIcon name="map-marker" size={10} />Karachi, Sindh</Text>
-                      <Text style={styles.productDate}>23 JUL</Text>
-                    </View>
-                  </View>
-                </View>
-              </Card>
+              <RenderAds props={this.props} catId={catId} subcatId={subcatId} />
             </View>
           </View>
         </ScrollView>

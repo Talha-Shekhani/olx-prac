@@ -38,10 +38,10 @@ class Login extends Component {
             // Alert.alert(JSON.stringify(this.props.user))
             if (isEmail(this.state.email)) {
                 this.props.fetchUser(this.state.email)
-                if (this.props.user.users[0].email != '')
+                if (this.props.user.users[0].email != undefined)
                     if (this.state.email == this.props.user.users[0].email) {
                         SecureStore.setItemAsync('userdata',
-                            JSON.stringify({ email: this.state.email}))
+                            JSON.stringify({ email: this.state.email, userId: this.props.user.users[0].id}))
                             .then(() => this.props.navigation.navigate('password'))
                             .catch((err) => console.log('Could not save user info', err))
                     }
