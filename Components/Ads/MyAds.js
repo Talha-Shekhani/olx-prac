@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { SearchBar, Icon, Card, Image } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,6 +12,7 @@ import * as SecureStore from 'expo-secure-store'
 import { connect } from 'react-redux';
 import { baseUrl } from '../../shared/baseUrl';
 import NumberFormat from 'react-number-format';
+
 
 
 const mapStateToProps = state => {
@@ -47,24 +48,26 @@ class MyAds extends Component {
           {/* <Text>{JSON.stringify(this.props)}</Text> */}
           {this.props.ads.ads.filter(item => item.user_id == this.state.userId).map((item, index) => {
             return (
-              <Card containerStyle={styles.productCardColumn}>
-                <View style={styles.product} >
-                  <View style={styles.imageConatiner}>
-                    <Image containerStyle={styles.cardImage}
-                      resizeMethod="scale"
-                      resizeMode="stretch"
-                      source={{ uri: baseUrl + item.img1 }}
-                    />
-                  </View>
-                  <View style={styles.rightSide} >
-                    <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} prefix={'Rs '} renderText={formattedValue => <Text style={styles.productPrice} >{formattedValue}</Text>} />
-                    <Text style={styles.productTitle} numberOfLines={1}>{item.title}</Text>
-                    <View style={styles.rightBottom} >
-                      <Text style={styles.productLoc}><MatIcon name="map-marker" size={10} />Karachi, Sindh</Text>
-                      <Text style={styles.productDate}>23 JUL</Text>
+              <Card containerStyle={styles.productCardColumn} key={index} onPress={() => props.props.navigation.navigate('addetail', { adId: item.id, userId: item.user_id })}>
+                <TouchableOpacity>
+                  <View style={styles.product} >
+                    <View style={styles.imageConatiner}>
+                      <Image containerStyle={styles.cardImage}
+                        resizeMethod="scale"
+                        resizeMode="stretch"
+                        source={{ uri: baseUrl + item.img1 }}
+                      />
+                    </View>
+                    <View style={styles.rightSide} >
+                      <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} prefix={'Rs '} renderText={formattedValue => <Text style={styles.productPrice} >{formattedValue}</Text>} />
+                      <Text style={styles.productTitle} numberOfLines={1}>{item.title}</Text>
+                      <View style={styles.rightBottom} >
+                        <Text style={styles.productLoc}><IconMat name="map-marker" size={10} />Karachi, Sindh</Text>
+                        <Text style={styles.productDate}>23 JUL</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               </Card>
             )
           })}

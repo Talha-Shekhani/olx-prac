@@ -8,6 +8,7 @@ import {categories} from './categories'
 import {subcategories} from './subCategories'
 import {loc} from './location'
 import {users} from './users'
+import {favorites} from './favorites'
 
 export const configureStore = () => {
     const config = {
@@ -22,7 +23,8 @@ export const configureStore = () => {
             categories,
             subcategories,
             loc,
-            users
+            users,
+            favorites
         }),
         compose(
             applyMiddleware(thunk, logger)

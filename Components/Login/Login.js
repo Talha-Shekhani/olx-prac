@@ -38,7 +38,7 @@ class Login extends Component {
             // Alert.alert(JSON.stringify(this.props.user))
             if (isEmail(this.state.email)) {
                 this.props.fetchUser(this.state.email)
-                if (this.props.user.users[0].email != undefined)
+                if (this.props.user.users != undefined)
                     if (this.state.email == this.props.user.users[0].email) {
                         SecureStore.setItemAsync('userdata',
                             JSON.stringify({ email: this.state.email, userId: this.props.user.users[0].id}))

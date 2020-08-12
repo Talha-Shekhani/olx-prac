@@ -8,6 +8,7 @@ const Cat = require('./routes/categories')
 const Subcat = require('./routes/subCategories')
 const loc = require('./routes/location')
 const user = require('./routes/users')
+const favorites = require('./routes/favorites')
 
 // const hostname = '192.168.1.63'
 const hostname = 'localhost'
@@ -23,6 +24,7 @@ app.use('/fetchSubcat', Subcat )
 app.use('/fetchCat', Cat )
 app.use('/loc', loc )
 app.use('/users', user )
+app.use('/favorite', favorites )
 app.use(express.static(__dirname+ '/assets/images'))
 app.use((req, res, next) => {
     console.log(req.headers)

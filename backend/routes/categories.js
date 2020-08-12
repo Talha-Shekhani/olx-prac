@@ -38,6 +38,7 @@ Cat.route('/')
         con.query("SELECT * FROM categories", (err, result) => {
             if (err) {
               console.log("error: ", err);
+              res.statusCode = 403
               res.send(err)
             }
             else {

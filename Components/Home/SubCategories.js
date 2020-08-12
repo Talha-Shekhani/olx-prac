@@ -65,7 +65,8 @@ class SubCategories extends Component {
   }
 
   UNSAFE_componentWillMount() {
-    this.props.fetchSubCategories()
+    if (this.props.subcat == undefined)
+      this.props.fetchSubCategories()
   }
 
   render() {

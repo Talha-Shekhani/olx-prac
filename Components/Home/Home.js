@@ -64,7 +64,7 @@ function RenderAds(props) {
                 <Image containerStyle={styles.cardImage}
                   resizeMethod="scale"
                   resizeMode="stretch"
-                  source={{ uri: (baseUrl + item.img1) }}
+                  source={{ uri: (baseUrl + item.img1), cache: 'force-cache' }}
                 />
               </View>
               <View>
