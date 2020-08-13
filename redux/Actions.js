@@ -5,7 +5,7 @@ export const fetchAds = () => (dispatch) => {
     dispatch(adsLoading(true))
     async function fetchData() {
         return await fetch(`${baseUrl}ads`, {
-            mode: 'same-origin',
+            mode: 'no-cors',
             method: 'GET'
         })
             .then(response => {
@@ -48,7 +48,7 @@ export const fetchCategories = () => (dispatch) => {
     dispatch(catLoading(true))
     async function fetchData() {
         return await fetch(`${baseUrl}fetchCat`, {
-            // mode: 'no-cors',
+            mode: 'no-cors',
             method: 'GET'
         })
             .then(response => {
@@ -89,29 +89,29 @@ export const catAllAds = (cat) => ({
 
 export const fetchSubCategories = () => (dispatch) => {
     dispatch(subCatLoading(true))
-    async function fetchData () {
-    return await fetch(`${baseUrl}fetchSubcat`, {
-        // mode: 'no-cors',
-        method: 'GET'
-    })
-        .then(response => {
-            if (response.ok) {
-                return response
-            }
-            else {
-                var error = new Error('Error ' + response.status + ': ' + response.statusText)
-                error.response = response
-                return error
-            }
-        },
-            error => {
-                var errmess = new Error(error.message)
-                return errmess
-            })
-        .then((response) => { return response.json() })
-        // .then (response => console.log((response)))
-        .then(response => dispatch(subCatAllAds(response)))
-        .catch(error => dispatch(subCatFailed(error)))
+    async function fetchData() {
+        return await fetch(`${baseUrl}fetchSubcat`, {
+            mode: 'no-cors',
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response
+                }
+                else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                    error.response = response
+                    return error
+                }
+            },
+                error => {
+                    var errmess = new Error(error.message)
+                    return errmess
+                })
+            .then((response) => { return response.json() })
+            // .then (response => console.log((response)))
+            .then(response => dispatch(subCatAllAds(response)))
+            .catch(error => dispatch(subCatFailed(error)))
     }
     fetchData()
 }
@@ -132,27 +132,30 @@ export const subCatAllAds = (subCat) => ({
 
 export const fetchLoc = () => (dispatch) => {
     dispatch(locLoading(true))
-    return fetch(`${baseUrl}loc`, {
-        // mode: 'no-cors',
-        method: 'GET'
-    })
-        .then(response => {
-            if (response.ok) {
-                return response
-            }
-            else {
-                var error = new Error('Error ' + response.status + ': ' + response.statusText)
-                error.response = response
-                return error
-            }
-        },
-            error => {
-                var errmess = new Error(error.message)
-                return errmess
-            })
-        .then((response) => { return response.json() })
-        .then(response => dispatch(addAllLoc(response)))
-        .catch(error => dispatch(locFailed(error)))
+    async function fetchData() {
+        return await fetch(`${baseUrl}loc`, {
+            mode: 'no-cors',
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response
+                }
+                else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                    error.response = response
+                    return error
+                }
+            },
+                error => {
+                    var errmess = new Error(error.message)
+                    return errmess
+                })
+            .then((response) => { return response.json() })
+            .then(response => dispatch(addAllLoc(response)))
+            .catch(error => dispatch(locFailed(error)))
+    }
+    fetchData()
 }
 
 export const locLoading = () => ({
@@ -234,27 +237,30 @@ export const checkUser = (email, password) => (dispatch) => {
 
 export const fetchFav = (userId) => (dispatch) => {
     dispatch(favLoading(true))
-    return fetch(`${baseUrl}favorite/${userId}`, {
-        mode: 'no-cors',
-        method: 'GET'
-    })
-        .then(response => {
-            if (response.ok) {
-                return response
-            }
-            else {
-                var error = new Error('Error ' + response.status + ': ' + response.statusText)
-                error.response = response
-                return error
-            }
-        },
-            error => {
-                var errmess = new Error(error.message)
-                return errmess
-            })
-        .then((response) => { return response.json() })
-        .then(response => dispatch(addFav(response)))
-        .catch(error => dispatch(favFailed(error)))
+    async function fetchData() {
+        return await fetch(`${baseUrl}favorite/${userId}`, {
+            mode: 'no-cors',
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response
+                }
+                else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                    error.response = response
+                    return error
+                }
+            },
+                error => {
+                    var errmess = new Error(error.message)
+                    return errmess
+                })
+            .then((response) => { return response.json() })
+            .then(response => dispatch(addFav(response)))
+            .catch(error => dispatch(favFailed(error)))
+    }
+    fetchData()
 }
 
 export const favLoading = () => ({
@@ -272,7 +278,6 @@ export const addFav = (fav) => ({
 })
 
 export const delFav = (userId, adId) => (dispatch) => {
-    dispatch(favLoading(true))
     console.log(userId, adId)
     return fetch(`${baseUrl}favorite/${userId}/${adId}`, {
         mode: 'no-cors',
@@ -293,6 +298,35 @@ export const delFav = (userId, adId) => (dispatch) => {
                 return errmess
             })
         .then((response) => { return response.json() })
-        .then(response => dispatch(fetchAds(userId)))
+        .then(response => dispatch(deleteFav(adId)))
+        .catch(error => dispatch(favFailed(error)))
+}
+
+export const deleteFav = (adId) => ({
+    type: ActionTypes.DEL_FAV,
+    payload: adId
+})
+
+export const postFav = (userId, adId) => (dispatch) => {
+    return fetch(`${baseUrl}favorite/${userId}/${adId}`, {
+        mode: 'no-cors',
+        method: 'POST'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText)
+                error.response = response
+                return error
+            }
+        },
+            error => {
+                var errmess = new Error(error.message)
+                return errmess
+            })
+        .then((response) => { return response.json() })
+        .then(response => dispatch(fetchFav(userId)))
         .catch(error => dispatch(favFailed(error)))
 }

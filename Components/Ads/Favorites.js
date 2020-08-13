@@ -24,7 +24,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  fetchFav: (userId) => dispatch(fetchFav(userId)),
+  // fetchFav: (userId) => dispatch(fetchFav(userId)),
   delFav: (userId, adId) => dispatch(delFav(userId, adId))
 })
 
@@ -44,10 +44,10 @@ function RenderItem(props) {
           // <Text>{JSON.stringify(props.props.fav.favorites[0].ad_id) + ' '+ x}</Text>
           props.props.fav.favorites.map((itm, indx) => {
             return (
-              props.props.ads.ads.filter(item => item.id == itm.ad_id && item.user_id == props.userId).map((item, index) => {
+              props.props.ads.ads.filter(item => item.id == itm.ad_id).map((item, index) => {
                 return (
                   <Card containerStyle={styles.productCardColumn} key={index} onPress={() => props.props.navigation.navigate('addetail', { adId: item.id, userId: item.user_id })}>
-                    <View style={styles.iconHBack} ><Icon name='heart' onPress={() => props.props.delFav(item.id, item.user_id)} type="font-awesome" style={styles.iconHeart} color={'red'} /></View>
+                    <View style={styles.iconHBack} ><Icon name='heart' onPress={() => props.props.delFav(item.user_id, item.id)} type="font-awesome" style={styles.iconHeart} color={'red'} /></View>
                     <TouchableOpacity>
                       <View style={styles.product} >
                         <View style={styles.imageConatiner}>
@@ -75,7 +75,7 @@ function RenderItem(props) {
 
         )
       }
-      else return (<View></View>)
+      else return (<View><Text>No Favorites</Text></View>)
 }
 
 class Favorites extends Component {
@@ -89,6 +89,7 @@ class Favorites extends Component {
 
   componentDidUpdate() {
     // this.props.fetchFav(this.state.userId)
+    console.log(this.props.fav)
   }
 
   UNSAFE_componentWillMount() {
@@ -100,7 +101,7 @@ class Favorites extends Component {
           this.setState({ userId: userinfo.userId })
         }
       })
-      .then(() => this.props.fetchFav(this.state.userId))
+      // .then(() => this.props.fetchFav(this.state.userId))
       .catch((err) => console.log('Cannot find user info' + err))
 
   }

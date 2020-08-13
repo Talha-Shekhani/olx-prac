@@ -19,17 +19,12 @@ const mapStateToProps = state => {
 }
 
 function RenderItem(props) {
-  if (props.props.cat.isLoading) {
-    return (
-      <Loading />
-    )
-  }
-  else if (props.props.cat.errMess) {
+  if (props.props.cat.errMess) {
     return (<Text>Network Error</Text>)
   }
   else
     return (
-    // <Text>{JSON.stringify(props.props)}</Text>
+      // <Text>{JSON.stringify(props.props)}</Text>
       props.props.cat.categories.map((item, index) => {
         return (
           <ListItem containerStyle={styles.navLink} onPress={() => props.props.navigation.navigate('subcategories', { cat_id: item.cat_id, catName: item.title })}

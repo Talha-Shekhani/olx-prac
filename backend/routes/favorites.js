@@ -95,7 +95,7 @@ favorite.route('/:userKey/:adKey')
         res.end(`Will update the dish: ${req.body.name} with details: ${req.body.description}`)
     })
     .delete((req, res, next) => {
-        con.query(`DELETE FROM favorite where suser_id = ${req.params.userKey} AND ad_id = ${req.params.adKey}`, (err, result) => {
+        con.query(`DELETE FROM favorite where user_id = ${req.params.userKey} AND ad_id = ${req.params.adKey}`, (err, result) => {
             if (err) {
                 console.log("error: ", err);
                 res.statusCode = 403

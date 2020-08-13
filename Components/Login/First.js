@@ -12,6 +12,7 @@ import { postComment } from '../../redux/Actions'
 import { ads } from '../../redux/ads'
 import * as SecureStore from 'expo-secure-store'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
 
 class FirstPage extends Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class FirstPage extends Component {
     return (
       <SafeAreaView>
           <View>
-
+            <Button onPress={() => this.props.navigation.navigate('root')} />
           </View>
       </SafeAreaView>
     )

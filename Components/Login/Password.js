@@ -44,6 +44,7 @@ class Password extends Component {
                 if (userdata) {
                     let userinfo = JSON.parse(userdata)
                     this.setState({ email: userinfo.email, userId: userinfo.userId })
+                    console.log(userinfo)
                 }
             })
             .catch((err) => console.log('Cannot find user info' + err))

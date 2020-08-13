@@ -11,7 +11,7 @@ import { baseUrl } from '../../shared/baseUrl';
 import { Loading } from '../LoadingComponent';
 import { ads } from '../../redux/ads';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { isEmail } from 'react-native-validator-form/lib/ValidationRules';
+import { isEmail, isEmpty } from 'react-native-validator-form/lib/ValidationRules';
 import { fetchUser } from '../../redux/Actions';
 import * as SecureStore from 'expo-secure-store'
 
@@ -33,20 +33,30 @@ class Login extends Component {
         }
     }
 
+    UNSAFE_componentWillUpdate() {
+
+    }
+
     handleSubmit() {
         if (this.state.email != '') {
             // Alert.alert(JSON.stringify(this.props.user))
             if (isEmail(this.state.email)) {
-                this.props.fetchUser(this.state.email)
-                if (this.props.user.users != undefined)
-                    if (this.state.email == this.props.user.users[0].email) {
-                        SecureStore.setItemAsync('userdata',
-                            JSON.stringify({ email: this.state.email, userId: this.props.user.users[0].id}))
-                            .then(() => this.props.navigation.navigate('password'))
-                            .catch((err) => console.log('Could not save user info', err))
-                    }
-                    else this.setState({ errmsg: 'Email not Matched' })
-                else this.setState({ errmsg: 'Network Error' })
+                Promise.resolve(this.props.fetchUser(this.state.email))
+                    .then(() => {
+                        if (!isEmpty(this.props.user.users[0])) {
+                            if (this.state.email == this.props.user.users[0].email) {
+                                SecureStore.deleteItemAsync('userdata')
+                                    .then(() => {
+                                        SecureStore.setItemAsync('userdata',
+                                            JSON.stringify({ email: this.state.email, userId: this.props.user.users[0].id }))
+                                            .then(() => this.props.navigation.navigate('password'))
+                                            .catch((err) => console.log('Could not save user info', err))
+                                    })
+                            }
+                            else this.setState({ errmsg: 'Email not Matched' })
+                        }
+                        else this.setState({ errmsg: 'Email not Matched!' })
+                    })
             }
             else this.setState({ errmsg: 'Not Valid Email' })
         }
@@ -61,24 +71,24 @@ class Login extends Component {
                         <Image source={{ uri: baseUrl + 'boy.png' }} style={styles.image} />
                         <Text style={styles.title}>Enter your Email</Text>
                         <Text style={styles.heading}>Email</Text>
-                            <Input
-                                inputContainerStyle={styles.inputContainer}
-                                containerStyle={styles.formInput}
-                                inputStyle={styles.input}
-                                textContentType="emailAddress"
-                                keyboardType="email-address"
-                                name="email"
-                                renderErrorMessage={true}
-                                errorMessage={this.state.errmsg}
-                                placeholder="Email"
-                                onChangeText={(email) => this.setState({ email: email })}
-                                value={this.state.email}
-                            />
+                        <Input
+                            inputContainerStyle={styles.inputContainer}
+                            containerStyle={styles.formInput}
+                            inputStyle={styles.input}
+                            textContentType="emailAddress"
+                            keyboardType="email-address"
+                            name="email"
+                            renderErrorMessage={true}
+                            errorMessage={this.state.errmsg}
+                            placeholder="Email"
+                            onChangeText={(email) => this.setState({ email: email })}
+                            value={this.state.email}
+                        />
                     </View>
                 </ScrollView>
                 <View style={styles.formButton} >
                     <Button
-                        onPress={() => this.handleSubmit()} 
+                        onPress={() => this.handleSubmit()}
                         title='Next'
                         buttonStyle={{ backgroundColor: '#232323' }} />
                 </View>

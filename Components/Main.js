@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,11 +13,12 @@ import Home from './Home/Home'
 import Chat from './Chats/Chat';
 import Categories from './Home/Categories';
 import SubCategories from './Home/SubCategories';
-import { fetchAds, fetchCategories, fetchLoc } from '../redux/Actions'
+import { fetchAds, fetchCategories, fetchLoc, fetchFav } from '../redux/Actions'
 import { connect } from 'react-redux';
 import productList from './Home/productList';
 import adDetail from './Home/adDetail'
 import Login from './Login/Login'
+import * as SecureStore from 'expo-secure-store'
 import Password from './Login/Password'
 import SellCategories from './Sell/SellCategories'
 import tabMyAds from './Ads/TabMyAds'
@@ -31,7 +32,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   fetchAds: () => dispatch(fetchAds()),
   fetchCategories: () => dispatch(fetchCategories()),
-  fetchLoc: () => dispatch(fetchLoc())
+  fetchLoc: () => dispatch(fetchLoc()),
 })
 
 const Tab = createMaterialBottomTabNavigator();
@@ -77,7 +78,7 @@ const tabNavigation = () => {
       barStyle={{ backgroundColor: '#ddd' }}>
       <Tab.Screen name="Explore" component={Home} />
       <Tab.Screen name="Chats" component={Chat} />
-      <Tab.Screen name="Sell" component={SellCategories}   />
+      <Tab.Screen name="Sell" component={SellCategories} />
       <Tab.Screen name="MyAds" component={tabMyAds} />
       <Tab.Screen name="MyAccount" component={MyAccount} />
     </Tab.Navigator>
@@ -86,7 +87,24 @@ const tabNavigation = () => {
 
 class Main extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      userId: '',
+    }
+  }
+
   UNSAFE_componentWillMount() {
+    SecureStore.getItemAsync('userdata')
+      .then((userdata) => {
+        // Alert.alert(JSON.stringify(userinfo))
+        if (userdata) {
+          let userinfo = JSON.parse(userdata)
+          this.setState({ userId: userinfo.userId })
+          Alert.alert(this.state.userId.toString())
+        }
+      })
+      .catch((err) => console.log('Cannot find user info' + err))
     this.props.fetchAds()
     this.props.fetchCategories()
     this.props.fetchLoc()
@@ -97,8 +115,8 @@ class Main extends Component {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator>
-            {/* <Stack.Screen name="loginEmail" component={Login} options={{headerShown: false}} />
-            <Stack.Screen name="password" component={Password} options={{headerShown: false}} /> */}
+            <Stack.Screen name="loginEmail" component={Login} options={{headerShown: false}} />
+            <Stack.Screen name="password" component={Password} options={{headerShown: false}} />
             <Stack.Screen name="root" component={tabNavigation} options={{ headerShown: false }} />
             <Stack.Screen name='categories' component={Categories} />
             <Stack.Screen name='subcategories' component={SubCategories} />
